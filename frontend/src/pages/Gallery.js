@@ -1,16 +1,11 @@
+import pageContent from "../data/pageContent";
 import { useState } from "react";
-import galleryImages from "../data/galleryImages";
-import Lightbox from "./Lightbox";
-import Reviews from "./Reviews";
+import galleryImages, { galleryCategories } from "../data/galleryImages";
+import Lightbox from "../components/Lightbox";
+import Reviews from "../components/Reviews";
+import Awards from "../components/Awards";
 
-const categories = [
-  { value: "atmosphere", label: "Atmosphere" },
-  { value: "dishes", label: "Dishes" },
-  {
-    value: "events",
-    label: "Special Events & Behind the Scenes",
-  },
-];
+
 
 function Gallery() {
   const [selectedCategory, setSelectedCategory] = useState("dishes");
@@ -53,11 +48,16 @@ function Gallery() {
 
   return (
     <main className="gallery-page">
-      <header className="gallery-hero">
+      <header
+        className="gallery-hero"
+        style={{
+          backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.45), rgba(0, 0, 0, 0.45)), url("${pageContent.gallery.heroImage}")`,
+        }}
+      >
         <h1>
-          Our Gallery,
+          {pageContent.gallery.titleLines[0]}
           <br />
-          Awards & Reviews
+          {pageContent.gallery.titleLines[1]}
         </h1>
       </header>
 
@@ -66,7 +66,7 @@ function Gallery() {
         aria-label="Restaurant photo gallery"
       >
         <div className="gallery-filters" aria-label="Photo categories">
-          {categories.map((category) => (
+          {galleryCategories.map((category) => (
             <button
               key={category.value}
               className={
@@ -128,45 +128,7 @@ function Gallery() {
         </div>
       </section>
 
-      <section
-        className="gallery-awards"
-        aria-labelledby="gallery-awards-title"
-      >
-        <div className="awards-content">
-          <p className="section-label">Our Awards</p>
-          <h2 id="gallery-awards-title">What they say about us</h2>
-          <p className="awards-introduction">
-            Recognition of the food, hospitality, and memorable experiences
-            we share with our guests.
-          </p>
-
-          <div className="awards-grid">
-            <article className="award-card">
-              <span className="award-symbol" aria-hidden="true">
-                ✦
-              </span>
-              <h3>Culinary Excellence Award</h3>
-              <p>2022</p>
-            </article>
-
-            <article className="award-card">
-              <span className="award-symbol" aria-hidden="true">
-                ✦
-              </span>
-              <h3>Restaurant of the Year</h3>
-              <p>2023</p>
-            </article>
-
-            <article className="award-card">
-              <span className="award-symbol" aria-hidden="true">
-                ✦
-              </span>
-              <h3>Best Fine Dining Experience</h3>
-              <p>Foodie Magazine · 2023</p>
-            </article>
-          </div>
-        </div>
-      </section>
+      <Awards />
 
       <Reviews />
 

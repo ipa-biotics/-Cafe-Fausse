@@ -1,6 +1,6 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
-import cafeLogo from "../images/cafe-fausse-logo.png";
+import { Link, NavLink } from "react-router-dom";
+import restaurant from "../data/restaurant";
 
 function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
@@ -25,10 +25,10 @@ function Navbar() {
       <Link
         className="site-brand"
         to="/"
-        aria-label="Café Fausse home"
+        aria-label={`${restaurant.name} home`}
         onClick={closeMenu}
       >
-        <img src={cafeLogo} alt="Café Fausse" />
+        <img src={restaurant.logo} alt={restaurant.name} />
       </Link>
 
       <button
@@ -51,21 +51,25 @@ function Navbar() {
           isOpen ? "site-nav-links is-open" : "site-nav-links"
         }
       >
-        <Link to="/" onClick={closeMenu}>
-          Home
-        </Link>
-        <Link to="/menu" onClick={closeMenu}>
-          Menu
-        </Link>
-        <Link to="/reservations" onClick={closeMenu}>
-          Reservations
-        </Link>
-        <Link to="/about" onClick={closeMenu}>
-          About Us
-        </Link>
-        <Link to="/gallery" onClick={closeMenu}>
-          Gallery
-        </Link>
+        <NavLink to="/" end onClick={closeMenu}>
+          <span>Home</span>
+        </NavLink>
+
+        <NavLink to="/menu" onClick={closeMenu}>
+          <span>Menu</span>
+        </NavLink>
+
+        <NavLink to="/reservations" onClick={closeMenu}>
+          <span>Reservations</span>
+        </NavLink>
+
+        <NavLink to="/about" onClick={closeMenu}>
+          <span>About Us</span>
+        </NavLink>
+
+        <NavLink to="/gallery" onClick={closeMenu}>
+          <span>Gallery</span>
+        </NavLink>
       </div>
     </nav>
   );

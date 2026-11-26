@@ -101,3 +101,11 @@ const galleryImages = [
 ];
 
 export default galleryImages;
+export const galleryCategories = [
+  { value: "atmosphere", label: "Atmosphere" },
+  { value: "dishes", label: "Dishes" },
+  {
+    value: "events",
+    label: "Special Events & Behind the Scenes",
+  },
+];

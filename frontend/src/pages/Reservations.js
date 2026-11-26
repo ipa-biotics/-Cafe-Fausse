@@ -1,18 +1,9 @@
+import pageContent from "../data/pageContent";
+import restaurant from "../data/restaurant";
+import OpeningHours from "../components/OpeningHours";
 import { useState } from "react";
-import BookingDetails from "./BookingDetails";
+import BookingDetails from "../components/BookingDetails";
 
-const reservationTimes = [
-  "17:00",
-  "17:30",
-  "18:00",
-  "18:30",
-  "19:00",
-  "19:30",
-  "20:00",
-  "20:30",
-  "21:00",
-  "21:30",
-];
 
 function Reservations() {
   const [date, setDate] = useState("");
@@ -27,15 +18,33 @@ function Reservations() {
     setSelectedTime("");
 
     const selectedDate = new Date(`${date}T12:00:00`);
-    const isSunday = selectedDate.getDay() === 0;
-    const lastTime = isSunday ? "19:30" : "21:30";
+    const openingHours = restaurant.openingHours.find((entry) =>
+      entry.days.includes(selectedDate.getDay())
+    );
+    const times = [];
     const now = new Date();
 
-    const times = reservationTimes.filter((time) => {
-      const reservationStart = new Date(`${date}T${time}:00`);
+    if (openingHours) {
+      const [openHour, openMinute] = openingHours.opensAt.split(":").map(Number);
+      const [closeHour, closeMinute] = openingHours.closesAt.split(":").map(Number);
+      const firstStart = openHour * 60 + openMinute;
+      const lastStart = closeHour * 60 + closeMinute - restaurant.reservations.durationMinutes;
 
-      return time <= lastTime && reservationStart > now;
-    });
+      for (
+        let minute = firstStart;
+        minute <= lastStart;
+        minute += restaurant.reservations.intervalMinutes
+      ) {
+        const hourText = String(Math.floor(minute / 60)).padStart(2, "0");
+        const minuteText = String(minute % 60).padStart(2, "0");
+        const time = `${hourText}:${minuteText}`;
+        const reservationStart = new Date(`${date}T${time}:00`);
+
+        if (reservationStart > now) {
+          times.push(time);
+        }
+      }
+    }
 
     setProposedTimes(times);
 
@@ -48,22 +57,23 @@ function Reservations() {
 
   return (
     <main className="reservations-page">
-      <header className="reservations-hero">
-        <h1>Reserve Your Table</h1>
+      <header
+        className="reservations-hero"
+        style={{
+          backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url("${pageContent.reservations.heroImage}")`,
+        }}
+      >
+        <h1>{pageContent.reservations.title}</h1>
       </header>
 
       <section className="reservation-content">
-        <h2>Café Fausse</h2>
+        <h2>{restaurant.name}</h2>
 
         <address>
-          1234 Culinary Ave, Suite 100, Washington, DC 20002
+          {restaurant.address.street}, {restaurant.address.city}
         </address>
 
-        <p>
-          Monday–Saturday: 5:00 PM–11:00 PM
-          <br />
-          Sunday: 5:00 PM–9:00 PM
-        </p>
+        <OpeningHours />
 
         <form className="reservation-search" onSubmit={handleSearch}>
           <div className="reservation-field">

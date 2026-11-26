@@ -1,10 +1,10 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import "./App.css";
-import Home from "./components/Home";
-import Menu from "./components/Menu";
-import Reservations from "./components/Reservations";
-import About from "./components/About";
-import Gallery from "./components/Gallery";
+import Home from "./pages/Home";
+import Menu from "./pages/Menu";
+import Reservations from "./pages/Reservations";
+import About from "./pages/About";
+import Gallery from "./pages/Gallery";
 import Newsletter from "./components/Newsletter";
 import Footer from "./components/Footer";
 import ScrollToTop from "./components/ScrollToTop";

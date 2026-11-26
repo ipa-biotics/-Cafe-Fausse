@@ -1,13 +1,16 @@
+import pageContent from "../data/pageContent";
 function Newsletter() {
   return (
-    <section className="newsletter-section">
+    <section
+        className="newsletter-section"
+        style={{
+          backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url("${pageContent.newsletter.backgroundImage}")`,
+        }}
+      >
       <div className="newsletter-content">
-        <p className="section-label">Newsletter</p>
-        <h2>Subscribe to our newsletter</h2>
-        <p>
-          Stay up to date with restaurant news, seasonal dishes,
-          and special evenings at Café Fausse.
-        </p>
+        <p className="section-label">{pageContent.newsletter.label}</p>
+        <h2>{pageContent.newsletter.title}</h2>
+        <p>{pageContent.newsletter.description}</p>
 
         <form
           className="newsletter-form"

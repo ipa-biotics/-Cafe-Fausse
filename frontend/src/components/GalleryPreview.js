@@ -1,4 +1,5 @@
-import { useState } from "react";
+import pageContent from "../data/pageContent";
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import galleryImages from "../data/galleryImages";
 
@@ -17,25 +18,43 @@ function shuffleImages(images) {
 }
 
 function GalleryPreview() {
-  const [shuffledImages] = useState(() => shuffleImages(galleryImages));
+  const [images, setImages] = useState(() =>
+    shuffleImages(galleryImages)
+  );
   const [startIndex, setStartIndex] = useState(0);
 
-  const visibleImages = shuffledImages.slice(startIndex, startIndex + 3);
+  useEffect(() => {
+    if (images.length <= 3) {
+      return;
+    }
 
-  function showNextImages() {
-    setStartIndex((currentIndex) => {
-      const nextIndex = currentIndex + 3;
+    const timer = setInterval(() => {
+      setStartIndex((currentIndex) =>
+        (currentIndex + 3) % images.length
+      );
+    }, 5000);
 
-      return nextIndex >= shuffledImages.length ? 0 : nextIndex;
-    });
+    return () => clearInterval(timer);
+  }, [images.length]);
+
+  const visibleImages = [];
+
+  for (let offset = 0; offset < Math.min(3, images.length); offset++) {
+    const index = (startIndex + offset) % images.length;
+    visibleImages.push(images[index]);
+  }
+
+  function reshuffleImages() {
+    setImages(shuffleImages(galleryImages));
+    setStartIndex(0);
   }
 
   return (
     <section className="home-gallery">
-      <p className="section-label">Gallery</p>
-      <h2>Explore Café Fausse</h2>
-      
-      <p>A glimpse of our food, atmosphere, and special moments.</p>
+      <p className="section-label">{pageContent.galleryPreview.label}</p>
+      <h2>{pageContent.galleryPreview.title}</h2>
+
+      <p>{pageContent.galleryPreview.description}</p>
 
       <div className="home-gallery-grid">
         {visibleImages.map((image) => (
@@ -47,20 +66,10 @@ function GalleryPreview() {
         ))}
       </div>
 
-      <div className="gallery-actions">
-        <button
-          className="button button-outline"
-          type="button"
-          onClick={showNextImages}
-          disabled={shuffledImages.length <= 3}
-        >
-          Next Photos
-        </button>
+      <Link className="button" to="/gallery">
+        View Gallery
+      </Link>
 
-        <Link className="button" to="/gallery">
-          View Gallery
-        </Link>
-      </div>
     </section>
   );
 }

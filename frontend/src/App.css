@@ -6,14 +6,16 @@ body {
   margin: 0;
   background-color: #081416;
   color: #f7f7ef;
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: "Lora", Georgia, serif;
+  font-weight: 500;
 }
 
 h1,
 h2,
 h3 {
-  font-family: Georgia, serif;
-  font-weight: 400;
+  font-family: "Lora", Georgia, serif;
+  font-style: normal;
+  font-weight: 700;
 }
 
 main {
@@ -27,8 +29,26 @@ h1 {
 }
 
 p {
-  color: #aeb4ae;
+  color: #f7f7ef;
   line-height: 1.6;
+}
+
+/* Local fonts */
+
+@font-face {
+  font-family: "Lora";
+  src: url("./fonts/Lora-VariableFont_wght.ttf") format("truetype");
+  font-style: normal;
+  font-weight: 400 700;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Antic Didone";
+  src: url("./fonts/AnticDidone-Regular.ttf") format("truetype");
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
 }
 
 /* Main navigation */
@@ -48,7 +68,7 @@ p {
   padding: 24px;
 }
 
-/* Logo contrast */
+/* Logo  */
 
 .site-brand {
   display: block;
@@ -84,8 +104,8 @@ p {
 
 .site-nav-links a:hover,
 .site-nav-links a:focus-visible {
-  color: #d78339;
-  text-decoration: underline;
+  color: #f7f7ef;
+  text-decoration: none;
 }
 
 /* Mobile toggle */
@@ -179,9 +199,7 @@ p {
   align-items: center;
   justify-content: center;
   padding: 80px 24px;
-  background-image:
-    linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)),
-    url("./images/home-cafe-fausse.webp");
+
   background-size: cover;
   background-position: center;
 }
@@ -221,7 +239,7 @@ p {
   border: 1px solid #d78339;
   border-radius: 3px;
   background-color: #d78339;
-  color: #081416;
+  color: #f7f7ef;
   text-decoration: none;
   font-weight: bold;
 }
@@ -233,7 +251,7 @@ p {
 
 .button:hover {
   background-color: #e49a54;
-  color: #081416;
+  color: #f7f7ef;
 }
 
 /* Home story section */
@@ -249,9 +267,49 @@ p {
 }
 
 .section-label {
-  color: #d78339;
+  display: table;
+  max-width: 100%;
+  margin-left: 0;
+  margin-right: 0;
+  color: #f7f7ef;
+  font-family: "Lora", Georgia, serif;
+  font-size: 16px;
+  font-weight: 600;
+  font-style: normal;
   text-transform: uppercase;
-  letter-spacing: 2px;
+  letter-spacing: 0;
+}
+
+.section-label::after {
+  content: "";
+  display: block;
+  width: 75%;
+  height: 2px;
+  margin-top: 10px;
+  background-color: #d78339;
+}
+
+/* Center the label and its rule inside centered sections. */
+.reviews-section > .section-label,
+.home-gallery > .section-label,
+.about-story > .section-label,
+.about-section-heading > .section-label,
+.awards-content > .section-label,
+.gallery-heading > .section-label,
+.menu-heading > .section-label {
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.reviews-section > .section-label::after,
+.home-gallery > .section-label::after,
+.about-story > .section-label::after,
+.about-section-heading > .section-label::after,
+.awards-content > .section-label::after,
+.gallery-heading > .section-label::after,
+.menu-heading > .section-label::after {
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .home-story h2 {
@@ -334,9 +392,7 @@ p {
 
 .home-hours {
   padding: 80px 24px;
-  background-image:
-    linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)),
-    url("./images/opening-hours.png");
+
   background-size: cover;
   background-position: center;
 }
@@ -362,7 +418,7 @@ p {
 }
 
 .home-hours address a {
-  color: inherit;
+  color: #f7f7ef;
 }
 
 .hours-card {
@@ -406,31 +462,116 @@ p {
 
 .reviews-grid {
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 24px;
 }
 
 .review-card {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
   margin: 0;
-  padding: 40px 24px;
+  padding: 32px 24px;
+  border: 1px solid #d78339;
   border-radius: 16px;
   background-color: #101d1e;
+  text-align: left;
+}
+
+.review-quote {
+  height: 48px;
+  color: #f7f7ef;
+  font-family: "Lora", Georgia, serif;
+  font-size: 64px;
+  line-height: 1;
 }
 
 .review-card blockquote {
-  margin: 0 0 24px;
+  flex: 1;
+  margin: 16px 0 24px;
   color: #f7f7ef;
-  font-size: 20px;
-  line-height: 1.6;
+  font-size: 18px;
+  line-height: 1.7;
 }
 
 .review-card figcaption {
-  color: #d78339;
+  color: #f7f7ef;
+  font-weight: 600;
+}
+
+.review-example {
+  display: block;
+  margin: 8px 0 0;
+  color: #f7f7ef;
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.reviews-more {
+  margin-top: 32px;
+}
+
+/* Complete review list */
+
+.reviews-dialog {
+  width: min(800px, calc(100% - 32px));
+  max-height: 85vh;
+  padding: 32px;
+  overflow-y: auto;
+  border: 1px solid #aeb4ae;
+  border-radius: 12px;
+  background-color: #081416;
+  color: #f7f7ef;
+  text-align: left;
+}
+
+.reviews-dialog::backdrop {
+  background-color: rgba(0, 0, 0, 0.8);
+}
+
+.reviews-dialog-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+}
+
+.reviews-dialog-header h2 {
+  margin: 0;
+  font-size: clamp(26px, 4vw, 36px);
+}
+
+.reviews-dialog-header .button {
+  flex-shrink: 0;
+}
+
+.reviews-list-item {
+  padding: 24px 0;
+  border-bottom: 1px solid #344345;
+}
+
+.reviews-list-item:last-child {
+  border-bottom: 0;
+}
+
+.reviews-list-item blockquote {
+  margin: 0 0 12px;
+  font-size: 18px;
+  line-height: 1.7;
+}
+
+.review-author {
+  margin: 0;
+  font-weight: 600;
 }
 
 @media (max-width: 768px) {
   .reviews-grid {
     grid-template-columns: 1fr;
+  }
+
+  .reviews-dialog {
+    padding: 24px;
   }
 }
 
@@ -480,9 +621,7 @@ p {
 .newsletter-section {
   padding: 64px 24px;
   background-color: #101d1e;
-  background-image:
-    linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)),
-    url("./images/newsletter.png");
+
   background-size: cover;
   background-position: center;
 }
@@ -563,7 +702,7 @@ p {
 
 .site-footer address {
   font-style: normal;
-  color: #aeb4ae;
+  color: #f7f7ef;
 }
 
 .site-footer a {
@@ -578,8 +717,8 @@ p {
 
 .site-footer a:hover,
 .site-footer a:focus-visible {
-  color: #d78339;
-  text-decoration: underline;
+  color: #f7f7ef;
+  text-decoration: none;
 }
 
 .footer-copyright {
@@ -615,9 +754,7 @@ p {
   align-items: center;
   justify-content: center;
   padding: 64px 24px;
-  background-image:
-    linear-gradient(rgba(0, 0, 0, 0.45), rgba(0, 0, 0, 0.45)),
-    url("./images/gallery-ribeye-steak.webp");
+
   background-size: cover;
   background-position: center;
 }
@@ -646,10 +783,10 @@ p {
 .menu-category h2 {
   margin: 0 0 8px;
   color: #f7f7ef;
-  font-family: Georgia, serif;
+  font-family: "Lora", Georgia, serif;
   font-size: clamp(28px, 4vw, 38px);
-  font-style: italic;
-  font-weight: 400;
+  font-style: normal;
+  font-weight: 700;
 }
 
 .menu-category:nth-child(even) h2 {
@@ -671,14 +808,14 @@ p {
 
 .menu-item-description {
   margin: 0;
-  color: #d78339;
+  color: #f7f7ef;
   font-size: 15px;
   line-height: 1.6;
 }
 
 .menu-item-price {
   flex-shrink: 0;
-  color: #d78339;
+  color: #f7f7ef;
   font-size: 15px;
   white-space: nowrap;
 }
@@ -718,9 +855,7 @@ p {
   align-items: center;
   justify-content: center;
   padding: 64px 24px;
-  background-image:
-    linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)),
-    url("./images/reserve-a-table.png");
+
   background-size: cover;
   background-position: center;
 }
@@ -804,7 +939,7 @@ p {
 .time-slot.selected {
   border-color: #d78339;
   background-color: #d78339;
-  color: #081416;
+  color: #f7f7ef;
 }
 
 /* Booking details dialog */
@@ -888,9 +1023,7 @@ p {
   align-items: center;
   justify-content: center;
   padding: 64px 24px;
-  background-image:
-    linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)),
-    url("./images/gallery-special-event.webp");
+
   background-size: cover;
   background-position: center;
 }
@@ -968,7 +1101,7 @@ p {
 
 .owner-description .owner-role {
   margin: 0 0 20px;
-  color: #d78339;
+  color: #f7f7ef;
 }
 
 .owner-description > p:last-child {
@@ -992,8 +1125,8 @@ p {
 .commitment-number {
   display: block;
   margin-bottom: 24px;
-  color: #d78339;
-  font-family: Georgia, serif;
+  color: #f7f7ef;
+  font-family: "Lora", Georgia, serif;
   font-size: 40px;
 }
 
@@ -1041,9 +1174,7 @@ p {
   align-items: center;
   justify-content: center;
   padding: 64px 24px;
-  background-image:
-    linear-gradient(rgba(0, 0, 0, 0.45), rgba(0, 0, 0, 0.45)),
-    url("./images/gallery-special-event.webp");
+
   background-size: cover;
   background-position: center;
 }
@@ -1090,7 +1221,7 @@ p {
 .gallery-filter.selected {
   border-color: #d78339;
   background-color: #d78339;
-  color: #081416;
+  color: #f7f7ef;
 }
 
 /* Four-photo carousel */
@@ -1150,7 +1281,7 @@ p {
 
 .gallery-arrow:hover {
   border-color: #d78339;
-  color: #d78339;
+  color: #f7f7ef;
 }
 
 .gallery-arrow:disabled {
@@ -1163,13 +1294,7 @@ p {
 .gallery-awards {
   padding: 96px 24px;
   background-color: #101d1e;
-  background-image:
-    linear-gradient(
-      90deg,
-      rgba(8, 20, 22, 0.9),
-      rgba(8, 20, 22, 0.5)
-    ),
-    url("./images/awards.png");
+
   background-size: cover;
   background-position: center;
 }
@@ -1352,4 +1477,55 @@ p {
   .gallery-hero {
     padding-top: 200px;
   }
+}
+/* Page titles: Antic Didone with a centered accent above. */
+.home-hero h1,
+.menu-hero h1,
+.reservations-hero h1,
+.about-hero h1,
+.gallery-hero h1 {
+  font-family: "Antic Didone", Georgia, serif;
+  font-weight: 400;
+  font-style: normal;
+  text-transform: uppercase;
+}
+
+.home-hero h1::before,
+.menu-hero h1::before,
+.reservations-hero h1::before,
+.about-hero h1::before,
+.gallery-hero h1::before {
+  content: "";
+  display: block;
+  width: 56px;
+  height: 2px;
+  margin: 0 auto 24px;
+  background-color: #d78339;
+}
+
+/* Link markers follow the width of their text, including on mobile. */
+.site-nav-links a {
+  font-weight: 500;
+}
+
+.site-nav-links a span {
+  position: relative;
+  display: inline-block;
+}
+
+.site-nav-links a span::after {
+  content: "";
+  position: absolute;
+  left: 12.5%;
+  bottom: -7px;
+  width: 75%;
+  height: 2px;
+  background-color: #d78339;
+  opacity: 0;
+}
+
+.site-nav-links a[aria-current="page"] span::after,
+.site-nav-links a:hover span::after,
+.site-nav-links a:focus-visible span::after {
+  opacity: 1;
 }

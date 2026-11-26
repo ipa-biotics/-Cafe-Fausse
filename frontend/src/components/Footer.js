@@ -1,3 +1,6 @@
+import pageContent from "../data/pageContent";
+import restaurant from "../data/restaurant";
+import OpeningHours from "./OpeningHours";
 import { Link } from "react-router-dom";
 
 function Footer() {
@@ -5,17 +8,13 @@ function Footer() {
     <footer className="site-footer">
       <div className="footer-grid">
         <div>
-          <h2>Café Fausse</h2>
-          <p>
-            Italian flavors, seasonal ingredients, and thoughtful
-            hospitality in the heart of Washington, DC.
-          </p>
+          <h2>{restaurant.name}</h2>
+          <p>{pageContent.footer.description}</p>
         </div>
 
         <div>
           <h3>Opening Hours</h3>
-          <p>Monday–Saturday: 5:00 PM–11:00 PM</p>
-          <p>Sunday: 5:00 PM–9:00 PM</p>
+          <OpeningHours variant="footer" />
         </div>
 
         <nav aria-label="Footer navigation">
@@ -29,17 +28,17 @@ function Footer() {
         <div>
           <h3>Contact Us</h3>
           <address>
-            1234 Culinary Ave, Suite 100
+            {restaurant.address.street}
             <br />
-            Washington, DC 20002
+            {restaurant.address.city}
             <br />
-            <a href="tel:+12025554567">(202) 555-4567</a>
+            <a href={restaurant.phone.href}>{restaurant.phone.display}</a>
           </address>
         </div>
       </div>
 
       <p className="footer-copyright">
-        © {new Date().getFullYear()} Café Fausse. All rights reserved.
+        © {new Date().getFullYear()} {restaurant.name}. All rights reserved.
       </p>
     </footer>
   );
