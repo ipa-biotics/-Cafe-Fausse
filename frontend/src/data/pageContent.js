@@ -15,7 +15,7 @@ const pageContent = {
     hoursBackground: hoursBackground,
     heroImage: homeHero,
     kicker: "Welcome to",
-    tagline: "Italian flavors, creativity, and warm hospitality.",
+    tagline: "Refined cuisine, timeless elegance, and warm hospitality.",
     storyLabel: "About Us",
     storyTitle: "Our story, our people, and our passion for fine dining.",
     storyText: "Founded in 2010 by Chef Antonio Rossi and restaurateur Maria Lopez, Café Fausse blends traditional Italian flavors with modern culinary innovation.",
@@ -25,7 +25,7 @@ const pageContent = {
     menuText: "Discover a menu inspired by Italian flavors, seasonal ingredients, and the pleasure of sharing a beautifully prepared meal.",
     hoursLabel: "Reservations",
     hoursTitle: "Opening Hours",
-    hoursText: "Join us for an evening of Italian flavors and warm hospitality."
+    hoursText: "Plan your visit and join us for an evening of fine dining at Café Fausse."
   },
   menu: {
     heroImage: menuHero,
