@@ -1,0 +1,15 @@
+# Python: local environments and generated files
+venv/
+.venv/
+__pycache__/
+*.pyc
+
+# React: dependencies and generated files
+node_modules/
+dist/
+build/
+
+# Local configuration and secrets
+.env
+.env.*
+!.env.example
