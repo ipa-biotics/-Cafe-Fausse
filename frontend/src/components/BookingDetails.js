@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import axios from "axios";
+import ApiService from "../services/api-service";
 
 function BookingDetails({ date, time, guests, onClose }) {
   const dialogRef = useRef(null);
@@ -53,10 +53,7 @@ function BookingDetails({ date, time, guests, onClose }) {
     setIsSubmitting(true);
 
     try {
-      const response = await axios.post(
-        "/api/reservations",
-        bookingData
-      );
+      const response = await ApiService.createReservation(bookingData);
 
       setReservation(response.data.reservation);
       setMessage(response.data.message);

@@ -4,11 +4,16 @@ from datetime import datetime, timedelta
 
 from flask import Flask, request
 from flask_sqlalchemy import SQLAlchemy
+from flask_wtf.csrf import CSRFError, CSRFProtect, generate_csrf
 from sqlalchemy import URL, text
 from sqlalchemy.exc import IntegrityError, SQLAlchemyError
 
+from backend.forms import NewsletterForm, ReservationForm
+
 
 app = Flask(__name__)
+
+app.config["SECRET_KEY"] = os.environ["SECRET_KEY"]
 
 app.config["SQLALCHEMY_DATABASE_URI"] = URL.create(
     "postgresql+psycopg2",
@@ -20,6 +25,7 @@ app.config["SQLALCHEMY_DATABASE_URI"] = URL.create(
 )
 
 db = SQLAlchemy(app)
+csrf = CSRFProtect(app)
 
 RESERVATION_DURATION = timedelta(minutes=90)
 
@@ -83,12 +89,17 @@ class Reservation(db.Model):
     )
 
 
-# Email validation
+# Validation helpers
+
+def get_form_error(form):
+    for errors in form.errors.values():
+        if errors:
+            return errors[0]
+
+    return "Please check the submitted information."
+
 
 def is_valid_email(email):
-    if email == "" or len(email) > 150:
-        return False
-
     for character in email:
         if character.isspace():
             return False
@@ -235,6 +246,29 @@ def get_restaurant_time():
     ).scalar_one()
 
 
+# CSRF protection
+
+@app.route("/api/csrf-token", methods=["GET"])
+def get_csrf_token():
+    response = app.json.response({
+        "csrf_token": generate_csrf()
+    })
+
+    response.headers["Cache-Control"] = "no-store"
+
+    return response
+
+
+@app.errorhandler(CSRFError)
+def handle_csrf_error(error):
+    return {
+        "message": (
+            "Your security token is missing or expired. "
+            "Please submit the form again."
+        )
+    }, 400
+
+
 # Basic routes
 
 @app.route("/")
@@ -268,11 +302,13 @@ def subscribe_newsletter():
 
     email = email.strip().lower()
 
-    if email == "":
-        return {"message": "An email address is required."}, 400
+    form = NewsletterForm(
+        formdata=None,
+        data={"email": email},
+    )
 
-    if len(email) > 150:
-        return {"message": "The email address is too long."}, 400
+    if not form.validate():
+        return {"message": get_form_error(form)}, 400
 
     if not is_valid_email(email):
         return {"message": "Please enter a valid email address."}, 400
@@ -331,30 +367,13 @@ def create_reservation():
     newsletter = data.get("newsletter", False)
     reservation_terms = data.get("reservationTerms", False)
 
-    # Validate the guest's name.
+    # Check JSON types before cleaning the text fields.
 
     if not isinstance(name, str):
         return {"message": "A full name is required."}, 400
 
-    name = name.strip()
-
-    if name == "":
-        return {"message": "A full name is required."}, 400
-
-    if len(name) > 100:
-        return {"message": "The full name is too long."}, 400
-
-    # Validate the email address.
-
     if not isinstance(email, str):
         return {"message": "An email address is required."}, 400
-
-    email = email.strip().lower()
-
-    if not is_valid_email(email):
-        return {"message": "Please enter a valid email address."}, 400
-
-    # Validate the optional phone number.
 
     if phone is None:
         phone = ""
@@ -362,10 +381,26 @@ def create_reservation():
     if not isinstance(phone, str):
         return {"message": "The phone number must be text."}, 400
 
+    name = name.strip()
+    email = email.strip().lower()
     phone = phone.strip()
 
-    if len(phone) > 20:
-        return {"message": "The phone number is too long."}, 400
+    # Validate required fields and maximum lengths.
+
+    form = ReservationForm(
+        formdata=None,
+        data={
+            "name": name,
+            "email": email,
+            "phone": phone,
+        },
+    )
+
+    if not form.validate():
+        return {"message": get_form_error(form)}, 400
+
+    if not is_valid_email(email):
+        return {"message": "Please enter a valid email address."}, 400
 
     # Validate consent and newsletter preference.
 
@@ -430,6 +465,7 @@ def create_reservation():
 
     try:
         # Serialize reservation writes until commit or rollback.
+
         db.session.execute(
             text(
                 "LOCK TABLE reservations "
@@ -463,6 +499,8 @@ def create_reservation():
                 )
             }, 409
 
+        # Create or update the customer.
+
         customer = Customer.query.filter_by(
             email_address=email
         ).first()
@@ -484,7 +522,8 @@ def create_reservation():
             if newsletter:
                 customer.newsletter_signup = True
 
-        # Obtain the new customer's ID without committing yet.
+        # Obtain the customer ID without committing the transaction.
+
         db.session.flush()
 
         reservation = Reservation(

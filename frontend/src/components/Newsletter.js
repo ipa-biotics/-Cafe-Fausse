@@ -1,5 +1,5 @@
 import { useState } from "react";
-import axios from "axios";
+import ApiService from "../services/api-service";
 import pageContent from "../data/pageContent";
 
 function Newsletter() {
@@ -14,9 +14,7 @@ function Newsletter() {
     setIsSubmitting(true);
 
     try {
-      const response = await axios.post("/api/newsletter", {
-        email: email,
-      });
+      const response = await ApiService.subscribeNewsletter(email);
 
       setMessage(response.data.message);
       setEmail("");
