@@ -378,6 +378,11 @@ Cancelled reservations remain in the database and do not block table
 availability.
 
 ## Testing
+- Cancel a reservation and confirm that its table can be booked again
+  for the same start time while preserving the cancelled record.
+- Verify table capacity priority: a booking for 4 guests uses a capacity-4
+  table when available and falls back to an eligible capacity-6 table
+  when all capacity-4 tables are occupied.
 
 ### Manual checks completed
 
@@ -397,6 +402,13 @@ Postman, and PostgreSQL queries:
 - Reuse a table when the previous reservation ends.
 - Submit newsletter and reservation forms through React.
 - Verify both forms still work after adding CSRF handling and Flask-WTF validation.
+- Launch two concurrent requests for the last eligible table.
+  One request returned 201 and the other returned 409 for unavailability.
+  PostgreSQL confirmed that only one additional reservation was created.
+- Reject guest counts of 0 and 9.
+- Reject reservations without acceptance of the reservation terms.
+- Reject malformed email addresses on the backend.
+- Accept a Sunday reservation at 7:30 PM, ending exactly at closing time.
 
 These checks cover selected scenarios; they are not an exhaustive
 automated test suite.
@@ -435,7 +447,9 @@ features have automated tests.
 - Database-backed management of menu items, gallery images, and page content.
 - Support for changing the restaurant's table configuration.
 - Support for combining tables for larger groups.
-- Broader automated validation, availability, and concurrency tests.
+- Expand automated test coverage for validation, availability, and concurrency.
+- Submit a newsletter request without a CSRF token.
+  Flask returned 400, and PostgreSQL confirmed that no customer was created.
 
 These features are not currently implemented.
 
